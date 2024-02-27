@@ -1,7 +1,7 @@
 /**********************************************************************************************************************************
 * Objetivo: Arquivo para realizar as requisições                                                                                  *
 * Data: 30/01/24                                                                                                                  *
-* Autor: Igor Araujo                                                                                                              *
+* Autor: Matheus Zanoni
 * Versão: 1.0                                                                                                                     * 
 ***********************************************************************************************************************************/
 
@@ -35,6 +35,9 @@ app.use((request, response, next) => {
     next()
 
 })
+
+// Cria um objeto do TIPO JSON PARA RECEBR OS DADOS VIA BODY NAS REQUISIÇÔES POST OU PUT
+const bodyParserJSON = bodyParser.json();
 
 /******************************** Imports de arquivos e bibliotecas do Projeto *********************************/
 
@@ -78,6 +81,24 @@ app.get('/v2/acmefilmes/filme/:id', cors(), async function(request, response, ne
 
     response.status(dadosFilme)
     response.json(dadosFilme)
+})
+
+// mariana alves de sousa !! 
+// matheusssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss
+// deixaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+// de ser chato #ficalegalmatheus *emoji de joinha*
+
+// EndPoint: Inserir novos filmes no BD
+
+// Não esquecer de colocar o bodyparserJSOn que é quem define o formato de chegada dos
+app.post('/v2/acmefilmes/filme', cors(), bodyParserJSON, async function(request, response, next){
+    // Recebe os dados encaminhados na requisição no body( JSON)
+    let dadosBody = request.body
+
+    let resultDados = await controllerFilmes.setInserirNovoFilme(bodyParser)
+
+    response.status(resultDados.status_code)
+    response.json(resultDados)
 })
 
 app.listen('8080', function(){

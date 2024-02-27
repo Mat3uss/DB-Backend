@@ -1,7 +1,7 @@
 /**********************************************************************************************************************************
 * Objetivo: Criar a intereação com o banco de dados MYSQL para fazer o CRUD de filmes                                             *
 * Data: 30/01/24                                                                                                                  *
-* Autor: Igor Araujo                                                                                                              *
+* Autor: Matheus Zanoni                                                                                                           *
 * Versão: 1.0                                                                                                                     * 
 ***********************************************************************************************************************************/
 
@@ -12,7 +12,42 @@ const { PrismaClient } = require ('@prisma/client')
 const prisma = new PrismaClient()
 
 // Inserir um novo filme
-const insertFilme = async function(){
+const insertFilme = async function(dadosFilme){
+    // Script SQL para inserir no banco de dados
+    try {
+
+        if(dadosFilme.data_relancamento == null || dadosFilme.data_relancamento == undefined || dadosFilme.data_relancamento == ''){
+            let sql = `insert into tbl_filme'(
+                nome,
+                sinopse,
+                data_lancamento,
+                data_relancamento,
+                duracao,
+                foto_capa,
+                valor_unitario
+            )values(
+                '${dadosFilme.nome}',
+                '${dadosFilme.sinopse}',
+                '${dadosFilme.data_lancamento}',
+                null,
+                '${dadosFilme.duracao}',
+                '${dadosFilme.foto_capa}',
+                '${dadosFilme.valor_unitario}'
+            )`
+            // Executa o SCRIPT SQL no DB (devemos usar o comando execuuto e não o query)
+            // O comnaod execute deve ser utilizado para (insert, update e delete)
+        }
+
+        let result = await prisma.$executeRawUnsafe()
+            // validação para verificar se o insert funcionou no BD
+        if(result)
+            return true
+        else
+            return false
+
+    } catch (error) {
+        return false
+    }
 
 }
 
