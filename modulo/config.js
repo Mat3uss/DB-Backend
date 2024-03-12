@@ -11,7 +11,7 @@ const ERROR_NOT_FOUND = {status: false, status_code: 404 ,message: 'Nenhum item 
 const ERROR_INTERNAL_SERVER_DB = {status: false, status_code: 500 ,message: 'Ocorreram erros internos no servidor de banco de dados, por favor contate o administrador do sistema'}
 const ERROR_REQUIRED_FIELDS = {status: false, status_code: 400 ,message: 'Existem campos obrigatiorios que não foram preenchidos corretamente'}
 const ERROR_CONTENT_TYPE = {status: false, status_code: 415, message: 'O Content-Type da requisição não é suportado. Precisa ser enviado dados no formato application/json'}
-const ERROR_INTERNAL_SERVER = {status: false, status_code: 500, message: ''}
+const ERROR_INTERNAL_SERVER = {status: false, status_code: 500, message: 'Ocorreram erros internos no servidor na camada de negocio da API'}
 
 /******************************* MENSAGENS DE SUCESSO****************************************/
 

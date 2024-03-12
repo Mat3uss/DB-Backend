@@ -22,7 +22,7 @@ const setInserirNovoFilme = async function (dadosFilme, contentType){
 
 try {
 
-    if(String(contentType).toLocaleLowerCase()== 'application/json'){
+    if(String(contentType).toLowerCase()== 'application/json'){
 
   
     // cria o objeto JSON para devolver os dados criados na requisição
@@ -87,10 +87,10 @@ try {
       }
 
     }else{
-    return message.ERROR_CONTENT_TYPE; // 415
+    return message.ERROR_CONTENT_TYPE // 415
     }
  } catch(error){
-return message.ERROR_INTERNAL_SERVER
+return message.ERROR_INTERNAL_SERVER // 500  
  }
   }
         
