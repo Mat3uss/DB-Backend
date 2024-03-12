@@ -91,10 +91,14 @@ app.get('/v2/acmefilmes/filme/:id', cors(), async function(request,response,next
 // primeiro end point usando POST 
 app.post('/v2/acmefilmes/filme', cors(), bodyParserJson, async function (request, response,next ){
 
-    // vou receber o que chegar no corpo da requisição e guardar nessa variável local
+//  Api reebe o content-tye (API DEVE RECEBER SOMENTE application/json)
+    let contentType = request.headers['content-type'];
+    
+
+    // recebe o que chegar no corpo da requisição e guardar nessa variável local
     let dadosBody = request.body;
     // encaminha os dados para a controller enviar para o DAO
-    let resultDadosNovoFilme = await controllerFilmes.setInserirNovoFilme(dadosBody);
+    let resultDadosNovoFilme = await controllerFilmes.setInserirNovoFilme(dadosBody, contentType);
 
 
     response.status(resultDadosNovoFilme.status_code);

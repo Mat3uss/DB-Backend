@@ -11,12 +11,20 @@ const message = require ('../modulo/config.js');
 
 
 // Import do arquivo DAO que fará a comuicação do banco de dados 
-const filmeDAO = require('../model/DAO/filme.js')
+const filmeDAO = require('../model/DAO/filme.js');
+const { application } = require('express');
+
+
 
 
 //função para validar e inserir um novo filme
-const setInserirNovoFilme = async function (dadosFilme){
+const setInserirNovoFilme = async function (dadosFilme, contentType){
 
+try {
+
+    if(String(contentType).toLocaleLowerCase()== 'application/json'){
+
+  
     // cria o objeto JSON para devolver os dados criados na requisição
     let novoFilmeJSON = {};
     
@@ -28,7 +36,6 @@ const setInserirNovoFilme = async function (dadosFilme){
         dadosFilme.foto_capa == ''                || dadosFilme.foto_capa == undefined          ||  dadosFilme.foto_capa ==  null         || dadosFilme.foto_capa.length > 200       ||
         dadosFilme.valor_unitario.length > 6      
     ){
-        console.log(dadosFilme)
         // return do status code 400
         return message.ERROR_REQUIRED_FIELDS
     
@@ -44,7 +51,7 @@ const setInserirNovoFilme = async function (dadosFilme){
             // validação para verificar se a data está com a quantidade de digitos corretos 
             if (dadosFilme.data_relancamento.length != 10) {
                 
-                console.log("llllllll")
+
                 return message.ERROR_REQUIRED_FIELDS; //400
             }else{
                 validateStatus = true;
@@ -63,14 +70,14 @@ const setInserirNovoFilme = async function (dadosFilme){
         if (novoFilme)
         {
 
-            let ultimoId = await filmeDAO.InsertById ()
-            dadosFilme.id = ultimoId[0].id
+            let ultimoId = await filmeDAO.selectIdFilme()
+            dadosFilme.id = Number(ultimoId[0].id)
         
             // se inseriu cria o JSON dos dados (201)
             novoFilmeJSON.filme  = dadosFilme
-            novoFilmeJSON.status = message.SUCESS_CREATED_ITEM.status
-            novoFilmeJSON.status_code = message.SUCESS_CREATED_ITEM.status_code
-            novoFilmeJSON.message = message.SUCESS_CREATED_ITEM.message 
+            novoFilmeJSON.status = message.SUCCESS_CREATED_ITEM.status
+            novoFilmeJSON.status_code = message.SUCCESS_CREATED_ITEM.status_code
+            novoFilmeJSON.message = message.SUCCESS_CREATED_ITEM.message 
 
             return novoFilmeJSON; // 201
         }else{
@@ -78,8 +85,14 @@ const setInserirNovoFilme = async function (dadosFilme){
             }
         }   
       }
-    }
 
+    }else{
+    return message.ERROR_CONTENT_TYPE; // 415
+    }
+ } catch(error){
+return message.ERROR_INTERNAL_SERVER
+ }
+  }
         
 
 //função para validar e atualizar um filme
