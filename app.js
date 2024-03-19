@@ -111,7 +111,7 @@ app.delete('/v1/acmefilmes/deleteFilme/:id', cors (), async function (request,re
     let idFilme = request.params.id
 
     let dadosFilme = await controllerFilmes.setExcluirFilme(idFilme);
-
+    
     response.status(dadosFilme.status_code);
     response.json(dadosFilme);
 })

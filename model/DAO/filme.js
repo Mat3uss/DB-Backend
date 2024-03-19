@@ -77,6 +77,7 @@ const insertFilme =  async function(dadosFilme) {
 
 //funcao para atualizar um filme no banco de dados
 const updateFilme = async function(id,dadosFilme){
+    
 }
 
 const deleteFilme = async function (id){
