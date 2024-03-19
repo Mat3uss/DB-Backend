@@ -77,53 +77,19 @@ const insertFilme =  async function(dadosFilme) {
 
 //funcao para atualizar um filme no banco de dados
 const updateFilme = async function(id,dadosFilme){
-    try{
-
-        let sql;
-
-        if (dadosFilme.data_relancamento != '' && 
-            dadosFilme.data_relancamento != null &&
-            dadosFilme.data_relancamento != undefined
-        ){
-
-            sql = `UPDATE tbl_filme SET nome = ${dadosFilme.nome},
-                sinopse = '${dadosFilme.sinopse}',
-                duracao = '${dadosFilme.duracao}',
-                data_lancamento = '${dadosFilme.data_lancamento}',
-                data_relancamento = '${dadosFilme.data_relancamento}',
-                foto_capa = '${dadosFilme.foto_capa}',
-                valor_unitario  = '${dadosFilme.valor_unitario}' 
-                where tbl_filme.id = ${id}; `
-        } else {
-             sql = `UPDATE tbl_filme SET  nome = '${dadosFilme.nome}',
-                sinopse = '${dadosFilme.sinopse}',
-                duracao = '${dadosFilme.duracao}',
-                data_lancamento = '${dadosFilme.data_lancamento}',
-                data_relancamento = null ,
-                foto_capa = '${dadosFilme.foto_capa}',
-                valor_unitario  = '${dadosFilme.valor_unitario}' 
-                 where tbl_filme.id = ${id}; `
-        }
-
-        let result = await prisma.$executeRawUnsafe(sql);
-
-        if (result)
-            return true
-        else
-            return false;
-        
-    } catch (error) {
-        
-       
-        return false
-
-    }
 }
 
-//função para excluir um filme no banco de dodos
-const deleteFilme = async function (){
-    
+const deleteFilme = async function (id){
+    try {
+        let sql = `DELETE FROM tbl_filme WHERE tbl_filme.id = ${id}`;
 
+        let rsFilme = await prisma.$queryRawUnsafe(sql);
+
+        return rsFilme
+
+    } catch (error) {
+        return false
+    }
 }
 
 const selectIdFilme = async function (){

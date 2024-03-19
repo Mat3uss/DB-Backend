@@ -16,8 +16,8 @@ const ERROR_INTERNAL_SERVER = {status: false, status_code: 500, message: 'Ocorre
 /******************************* MENSAGENS DE SUCESSO****************************************/
 
 const SUCCESS_CREATED_ITEM = {status: true, status_code: 201, message: 'Item Inserido com sucesso!'}
-const SUCCESS_DELETED_ITEM = {status: true, status_code: 202, message: 'Item Deletado com sucesso!'}
-const SUCESS_UPDATED_ITEM = {status:true, status_code: 200, message: 'Item Atualizado com Sucesso!' }
+const SUCCESS_DELETED_ITEM = {status: true, status_code: 200, message: 'Item Deletado com sucesso!'}
+const SUCCESS_UPDATED_ITEM = {status:true, status_code: 200, message: 'Item Atualizado com Sucesso!' }
 
 
 
@@ -31,5 +31,5 @@ module.exports = {
     ERROR_CONTENT_TYPE,
     ERROR_INTERNAL_SERVER,
     SUCCESS_DELETED_ITEM,
-    SUCESS_UPDATED_ITEM
+    SUCCESS_UPDATED_ITEM
 }

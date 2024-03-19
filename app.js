@@ -106,6 +106,15 @@ app.post('/v2/acmefilmes/filme', cors(), bodyParserJson, async function (request
 
 } )
 
+app.delete('/v1/acmefilmes/deleteFilme/:id', cors (), async function (request,response,next){
+
+    let idFilme = request.params.id
+
+    let dadosFilme = await controllerFilmes.setExcluirFilme(idFilme);
+
+    response.status(dadosFilme.status_code);
+    response.json(dadosFilme);
+})
 app.listen('8080', function(){
     console.log('API FUNCIONANDO')
 })

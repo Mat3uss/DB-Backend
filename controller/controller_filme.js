@@ -1,7 +1,7 @@
 /**********************************************************************************************************************************************
-* Objetivo: Arquivo responsavel pela interação entre o APP e a model, que teremos todas as tratativas e regra de negocio para o CRUD de filmes*                                                 *                                                                     *
+* Objetivo: Arquivo responsavel pela interação entre o APP e a model, que teremos todas as tratativas e regra de negocio para o CRUD de filmes*                                                
 * Data: 30/01/24                                                                                                                              *
-* Autor: Matheus Zanoni Barbosa                                                                                                                         *
+* Autor: Matheus Zanoni Barbosa                                                                                                               *
 * Versão: 1.0                                                                                                                                 * 
 ***********************************************************************************************************************************************/
 
@@ -96,13 +96,25 @@ return message.ERROR_INTERNAL_SERVER // 500
         
 
 //função para validar e atualizar um filme
-const setAtualizarFilme = async function(){
-
+const setAtualizarFilme = async function(id, dadosFilme, contentType){
 }
+//função para excluir um filme
+const setExcluirFilme = async function(id){
 
-//funcção para excluir um filme
-const setExcluirFilme = async function(){
+    try {
 
+        let idFilme = id;
+
+        if(idFilme == ''  || idFilme == undefined || isNaN (idFilme)){
+            return message.ERROR_INVALID_ID //400
+        } else {
+            let deleteFilme = await filmeDAO.deleteFilme(id)
+            if (deleteFilme)
+            return message.SUCCESS_DELETED_ITEM
+        } 
+    } catch (error) {
+        return message.ERROR_INTERNAL_SERVER
+    }
 }
 
 //função para retornar todos os filmes
@@ -114,7 +126,7 @@ const getListarFilmes = async function(){
     //Chama a funcão do DAO para retornar os dados da tabela de filmes
     let dadosFilmes = await filmeDAO.selectAllFilmes();
 
-    // Validação para verificar s existem dados 
+    // Validação para verificar se existem dados 
     if (dadosFilmes){
 
         if(dadosFilmes.length > 0){
