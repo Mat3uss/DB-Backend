@@ -78,6 +78,49 @@ const insertFilme =  async function(dadosFilme) {
 //funcao para atualizar um filme no banco de dados
 const updateFilme = async function(id,dadosFilme){
     try{
+<<<<<<< HEAD
+=======
+
+        let sql;
+
+        if (dadosFilme.data_relancamento != '' && 
+            dadosFilme.data_relancamento != null &&
+            dadosFilme.data_relancamento != undefined
+        ){
+
+            sql = `UPDATE tbl_filme SET nome = '${dadosFilme.nome}',
+                sinopse = '${dadosFilme.sinopse}',
+                duracao = '${dadosFilme.duracao}',
+                data_lancamento = '${dadosFilme.data_lancamento}',
+                data_relancamento = '${dadosFilme.data_relancamento}',
+                foto_capa = '${dadosFilme.foto_capa}',
+                valor_unitario  = '${dadosFilme.valor_unitario}' 
+                where tbl_filme.id = ${id}; `
+        } else {
+             sql = `UPDATE tbl_filme SET  nome = '${dadosFilme.nome}',
+                sinopse = '${dadosFilme.sinopse}',
+                duracao = '${dadosFilme.duracao}',
+                data_lancamento = '${dadosFilme.data_lancamento}',
+                data_relancamento = null,
+                foto_capa = '${dadosFilme.foto_capa}',
+                valor_unitario  = '${dadosFilme.valor_unitario}' 
+                 where tbl_filme.id = ${id}; `
+        }
+
+        let result = await prisma.$executeRawUnsafe(sql);
+
+        if (result)
+            return true
+        else
+            return false;
+        
+    } catch (error) {
+        
+        return false
+
+    }
+}
+>>>>>>> 0e5529603b76dc722306011198f60f4ae7921346
 
         let sql;
 
