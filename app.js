@@ -115,6 +115,21 @@ app.delete('/v1/acmefilmes/deleteFilme/:id', cors (), async function (request,re
     response.status(dadosFilme.status_code);
     response.json(dadosFilme);
 })
+
+app.put('/v1/acmefilmes/updateFilme/:id', cors(), bodyParserJson, async function(request,response,next){
+
+    let idFilme = request.params.id
+    let contentType = request.headers['content-type'];
+    let dadosBody = request.body
+
+    let resultUpdateFilme = await controllerFilmes.setAtualizarFilme(idFilme, dadosBody, contentType);
+
+    response.status(resultUpdateFilme.status_code)
+    response.json(resultUpdateFilme)
+
+    
+} )
+
 app.listen('8080', function(){
     console.log('API FUNCIONANDO')
 })
