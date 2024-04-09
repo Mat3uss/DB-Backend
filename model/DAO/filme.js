@@ -102,7 +102,7 @@ const updateFilme = async function(id,dadosFilme){
                 data_relancamento = null,
                 foto_capa = '${dadosFilme.foto_capa}',
                 valor_unitario  = '${dadosFilme.valor_unitario}' 
-                 where tbl_filme.id = ${id}; `
+                where tbl_filme.id = ${id}; `
         }
 
         let result = await prisma.$executeRawUnsafe(sql);
