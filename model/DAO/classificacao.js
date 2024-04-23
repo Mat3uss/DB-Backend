@@ -26,7 +26,7 @@ const selectAllClassificacoes = async function(){
 
     // Tratamento de erro para retornar dados ou retornar false
      if(rsClassficacao.length > 0)
-     return rsAtores;
+     return rsClassficacao;
      else
         return false
 
@@ -61,9 +61,72 @@ const deleteClassficationById = async function(id){
         }
     }
 
+    const selectIdClassificacao = async function(){
+        try {
+            let sql = `select CAST(last_insert_id() as DECIMAL) as id from tbl_classificacao limit 1`
+
+            let classificacaoId = await prisma.$queryRawUnsafe(sql)
+            return classificacaoId
+        } catch (error) {
+            return false
+        }
+    }
+
+    const insertClassificacao =  async function(dadosClassificacao) {
+    
+        try {
+    
+         let sql = `insert into tbl_classificacao(categoria, descricao, simbolo) values ('${dadosClassificacao.categoria}', '${dadosClassificacao.descricao}', '${dadosClassificacao.simbolo}' )`
+                
+            // Executa o script SQL no banco de dados | Devemos usar execute e não query!
+            // Execute deve ser utilizado para insert, update e delete, onde o banco não devolve dados
+            let result = await prisma.$executeRawUnsafe(sql);
+    
+            // Validação para verificar se o insert funcionou no banco de dados
+            if(result )
+                return true;
+            else
+                return false;
+    
+        } catch (error) {
+    
+            return false;
+            
+        }
+    }
+
+
+    const updateClassificacao =  async function(id, dadosClassificacao) {
+    
+        try{
+            let sql;
+    
+                sql = `UPDATE tbl_classificacao SET categoria = '${dadosClassificacao.categoria}',
+                    descricao = '${dadosClassificacao.descricao}',
+                    simbolo = '${dadosClassificacao.simbolo}'
+                    where id_classificacao = ${id}`
+            
+                    console.log(sql);
+    
+            let result = await prisma.$executeRawUnsafe(sql);
+            
+    
+            if (result)
+                return result
+            else
+                return false;
+            
+        } catch (error) {
+            return false
+    
+        }
+    }
 
 module.exports = {
     selectAllClassificacoes,
     selectClassficationsById,
-    deleteClassficationById
+    deleteClassficationById,
+    insertClassificacao,
+    selectIdClassificacao,
+    updateClassificacao
 }

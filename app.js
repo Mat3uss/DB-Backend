@@ -46,6 +46,8 @@ app.use((request,response,next) =>{
     const controllerDiretores = require('./controller/controller_diretor.js')
 
     const controllerGeneros = require('./controller/controller_generos.js')
+    
+    const controllerClassificacao = require('./controller/controller_classificacao.js')
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -55,7 +57,8 @@ const bodyParserJson = bodyParser.json();
 
 
 
-//EndPoint : Versão 2.0 - retorna todos os filmes do Banco de Dados 
+// FILMES
+
 app.get('/v2/acmefilmes/filmes', cors(),async function (request,response,next){
 
     // chama a função da controller para retornar os filmes;
@@ -80,7 +83,6 @@ app.get('/v1/acmefilmes/filmeNome', cors(), async function(request,response,next
         response.status(filmeNome.status_code)
 } )
 
-// endPoint: retorna o filme filtrano pelo ID
 app.get('/v2/acmefilmes/filme/:id', cors(), async function(request,response,next){
 
     // recebe o id da requisição
@@ -93,8 +95,6 @@ app.get('/v2/acmefilmes/filme/:id', cors(), async function(request,response,next
     response.json(dadosFilme);
 })
 
-
-// primeiro end point usando POST 
 app.post('/v2/acmefilmes/filme', cors(), bodyParserJson, async function (request, response,next ){
 
 //  Api reebe o content-tye (API DEVE RECEBER SOMENTE application/json)
@@ -135,7 +135,9 @@ app.put('/v1/acmefilmes/updateFilme/:id', cors(), bodyParserJson, async function
 
     
 } )
+// FILMES
 
+//   ATORES
 app.get('/v3/acmefilmes/atores', cors(), async function(request, response, next){
 
     // Chama a função para retornar os dados do filme
@@ -172,7 +174,7 @@ app.delete('/v3/acmefilmes/atores/:id', cors(), async function(request, response
   response.status(resultDados.status_code);
   response.json(resultDados);
 });
-  
+
 
 app.post('/v2/acmefilmes/atores/', cors(), bodyParserJson, async (request, response, next) => {
 
@@ -183,6 +185,7 @@ app.post('/v2/acmefilmes/atores/', cors(), bodyParserJson, async (request, respo
     response.json(resultDados)
 
 })
+// DIRETORES
 
 app.get('/v2/acmefilmes/diretores/', cors(), bodyParserJson, async(request, response, next) => {
 
@@ -199,6 +202,9 @@ app.get('/v2/acmefilmes/diretores/', cors(), bodyParserJson, async(request, resp
 
 })
 
+// DIRETORES
+
+// GENEROS
 
 app.get('/v3/acmefilmes/generos', cors(), async function(request, response, next){
 
@@ -263,7 +269,68 @@ app.put('/v3/acmefilmes/generos/:id', cors(), bodyParserJson, async function(req
   response.status(dadosGenero.status_code);
   response.json(dadosGenero)
 })
+// GENEROS
 
+// CLASSIFICAÇÃO
+
+app.get('/v3/acmefilmes/classificacao', cors(), async function(request,response,next){
+
+    let dadosClassificacao = await controllerClassificacao.getListarClassficacao();
+
+    // Validação para verificar se existem dados
+    if(dadosClassificacao){
+        response.json(dadosClassificacao)
+        response.status(200);
+    }else{
+        response.json({message: 'Nenhum registro encontrado'})
+        response.status()
+    }
+})
+app.get('/v3/acmefilmes/classificacao/:id', cors(), async function(request,response,next){
+
+    let idClassificacao = request.params.id
+
+    let dadosClassificacao = await controllerClassificacao.getListarClassficacaoById(idClassificacao)
+
+    response.status(dadosClassificacao.status_code)
+    response.json(dadosClassificacao)
+})
+
+app.delete('/v3/acmefilmes/classificacao/:id', cors(), async function(request, response, next){
+    let idClassificacao = request.params.id
+
+    let resultDados = await controllerClassificacao.setDeleteClassficacao(idClassificacao);
+
+    response.status(resultDados.status_code);
+    response.json(resultDados)
+})
+app.post('/v3/acmefilmes/classificacao', cors(), bodyParserJson, async function(request, response, next){
+
+    // Recebe o content-type da requisição (API deve receber application/json )
+   let contentType = request.headers['content-type'];
+  
+   // Recebe os dados encaminhados na requisição do body (JSON)
+   let dadosBody = request.body;
+  
+   
+   // Encaminha os dados da requisição para a controller enviar para o banco de dados
+   let resultDados = await controllerClassificacao.setInserirNovaClassificacao(dadosBody, contentType);
+  
+   response.status(resultDados.status_code);
+   response.json(resultDados);
+  })
+
+
+app.put('/v3/acmefilmes/classificacao/:id', cors(), bodyParserJson, async function(request,response, next){
+    let idClassificacao = request.params.id
+    let contentType = request.headers['content-type']
+    let dadosBody = request.body
+  
+    let dadosClassificacao = await controllerClassificacao.setUpdateClassificacao(idClassificacao, contentType, dadosBody);
+  
+    response.status(dadosClassificacao.status_code);
+    response.json(dadosClassificacao)
+  })
 
 app.listen('8080', function(){
     console.log('API FUNCIONANDO')
