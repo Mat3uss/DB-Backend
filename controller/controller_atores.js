@@ -93,7 +93,7 @@ const setDeleteAtor = async function(id){
             let chamarConst = await atoresDAO.selectAtorsById(idAtores)
 
             if(chamarConst.length > 0){
-                let dadosAtores = await atoresDAO.delectAtorsById(id)
+                let dadosAtores = await atoresDAO.deleteAtorsById(id)
 
                 if(dadosAtores){
                     return message.SUCCESS_DELETED_ITEM

@@ -72,7 +72,11 @@ const selectAtorsById = async function(id){
 }
 
 const deleteAtorsById = async function(id){
+
     try {
+    
+console.log(sql)
+
         let sql = `delete from tbl_atores where id = ${id}`
 
         let rsAtores = await prisma.$queryRawUnsafe(sql);
@@ -90,8 +94,6 @@ const selectIdAtor = async function(){
 
         let sql = `select CAST(last_insert_id() as DECIMAL) as id from tbl_atores limit 1`
     
-
-        console.log(sql)
 
         let atorId = await prisma.$queryRawUnsafe(sql)
          return atorId
