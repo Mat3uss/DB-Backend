@@ -91,7 +91,7 @@ const setDeleteDiretor = async function(id){
                 let dadosDiretores = await classificacaoDAO.deleteClassficationById(id)
 
                 if(dadosDiretores){
-                    return message.SUCESS_DELETED_ITEM
+                    return message.SUCCESS_DELETED_ITEM
                 }else {
                     return message.ERROR_INTERNAL_SERVER_DB
                 }

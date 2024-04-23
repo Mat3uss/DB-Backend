@@ -1,7 +1,7 @@
 /********************************
  * Objetivo: Cria a interação com o Banco de dados MySQL para fazer o CRUD de Filmes
  * Data: 09/04/2024
- * Autor: Pedro Pedraga
+ * Autor: Matheus Zanoni
  * Versão: 1.0
  *******************************/
 
@@ -12,10 +12,10 @@ const { PrismaClient } = require ('@prisma/client')
 const prisma = new PrismaClient();
 
 
-const selectAllClassfications = async function(){
+const selectAllClassificacoes = async function(){
 
     // Script sql para listar todos os registros
-    let sql = 'select * from tbl_classificacao order by id desc';
+    let sql = 'select * from tbl_classificacao order by id_classificacao desc';
 
     // $queryRawUnsafe(sql)  = Encaminha apenas a variável
     // $queryRaw('select * from tbl_classificacao) = Encaminha o script do banco 
@@ -35,7 +35,7 @@ const selectAllClassfications = async function(){
 const selectClassficationsById = async function(id){
         try {
             // Realiza a busca da classificacao pelo ID
-            let sql = `select * from tbl_classificacao where id = ${id}`;
+            let sql = `select * from tbl_classificacao where id_classificacao = ${id}`;
         
             // Executa no banco de dados o script sql
             let rsClassficacao = await prisma.$queryRawUnsafe(sql);
@@ -50,7 +50,7 @@ const selectClassficationsById = async function(id){
 
 const deleteClassficationById = async function(id){
         try {
-            let sql = `delete from tbl_classificacao where id = ${id}`
+            let sql = `delete from tbl_classificacao where id_classificacao = ${id}`
     
             let rsClassficacao = await prisma.$queryRawUnsafe(sql);
             return rsClassficacao;
@@ -63,7 +63,7 @@ const deleteClassficationById = async function(id){
 
 
 module.exports = {
-    selectAllClassfications,
+    selectAllClassificacoes,
     selectClassficationsById,
     deleteClassficationById
 }

@@ -135,7 +135,7 @@ const setDeleteGenero = async function(id){
             let chamarConst = await generoDAO.selectGeneroById(idGeneros)
 
             if(chamarConst.length > 0){
-                let dadosGenero = await generoDAO.selectGeneroById(id)
+                let dadosGenero = await generoDAO.deleteGeneroById(id)
 
                 if(dadosGenero){
                     return message.SUCCESS_DELETED_ITEM
@@ -152,72 +152,61 @@ const setDeleteGenero = async function(id){
     }
 }
 
-const setUpdateGenero = async function(dadosGenero, contentType, idGeneros){
-    try {
-        
-        let idGeneros = id; 
-        if (idGeneros  == '' || idGeneros == undefined || isNaN(idGeneros)){
+const setUpdateGenero = async function(id, contentType, dadosGenero){
+    try{
+        let idGenero = id;
+
+        if(idGenero == '' || idGenero == undefined || isNaN (idGenero)){
             return message.ERROR_INVALID_ID;
+
+           
+            
         }else{
 
-            if(String(contentType).toLowerCase() == 'application/json'){
+        if(String(contentType).toLowerCase() == 'application/json'){
+            let updateGeneroJson = {};
+            
+            if(dadosGenero.nome == ''    || dadosGenero.nome == undefined       ||  dadosGenero.nome == null               || dadosGenero.nome.length > 255 
+    ){
+            return message.ERROR_REQUIRED_FIELDS
+        } else {
 
+            let validateStatus = true;
+
+            let generoById = await generoDAO.selectGeneroById(id)
+
+            if(generoById.length > 0){
+                if (validateStatus){
+                    let updateGenero = await generoDAO.updateGenero(id,dadosGenero);
     
-                // Cria a variável json
-                let resultDadosGenero = {}
-            
-                // Validação de campos obrigatórios e consistência de dados
-                if( dadosGenero.nome == ''               || dadosGenero.nome == undefined              || dadosGenero.nome.length > 80           
-             
-                
-            ){
-                    return message.ERROR_REQUIRED_FIELDS // 400 Campos obrigatórios / Incorretos
-                 }else{
-                    // Variável para validar se poderemos chamar o DAO para inserir os dados
-                    let dadosValidated = false;
-        
-                    if(dadosValidated){
-            
-                    // Encaminha os dados para o DAO, inserir no Banco de Dados
-                    let novoGenero = await generoDAO.insertGenero(dadosGenero);
-                    
-            
-                    let idSelect = await generoDAO.selectGeneroById();
-            
-                    dadosGenero.id = Number (idSelect[0].id)
-
-                  
-
-                    // Validação de inserção de dados no banco de dados 
-                    if(novoGenero){
-            
-                       
-                        // Cria o padrão de JSOn para o retorno dos dados criados no banco de dados
-                        resultDadosGenero.status = message.SUCCESS_CREATED_ITEM.status;
-                        resultDadosGenero.status_code = message.SUCCESS_CREATED_ITEM.status_code;
-                        resultDadosGenero.message = message.SUCCESS_CREATED_ITEM.message;
-                        resultDadosGenero.genero = dadosGenero;
-            
-                        return resultDadosGenero; // 201
-                    } else{
-                        return message.ERROR_INTERNAL_SERVER_DB; // 500 Erro na camada do DAO (Banco)
-                        }
-            
-            
-                     }
-                   }
-                }else{
-                    return message.ERROR_CONTENT_TYPE // 415 Erro no content type
+                    if(updateGenero){
+                      
+                        updateGeneroJson.genero = dadosGenero
+                        updateGeneroJson.status = message.SUCCESS_UPDATED_ITEM.status
+                        updateGeneroJson.status_code = message.SUCCESS_UPDATED_ITEM.status_code
+                        updateGeneroJson.message = message.SUCCESS_UPDATED_ITEM.message
+    
+                        return updateGeneroJson;
+                    } else {
+                         return message.ERROR_INTERNAL_SERVER_DB
+                    }
                 }
-
-
+            }else{
+                return message.ERROR_NOT_FOUND
+            }
         }
+        } else {
+            return message.ERROR_CONTENT_TYPE
+        }
+        }
+
     } catch (error) {
         return message.ERROR_INTERNAL_SERVER
-        
     }
-
 }
+
+
+
 
 module.exports = {
     getListarGenero,

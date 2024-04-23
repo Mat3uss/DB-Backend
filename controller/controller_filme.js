@@ -141,9 +141,9 @@ const setAtualizarFilme = async function(id, dadosFilme, contentType){
                     if(uptadeFilme){
                       
                         updateFilmeJson.filme = dadosFilme
-                        updateFilmeJson.status = message.SUCESS_UPTADE_ITEM.status
-                        updateFilmeJson.status_code = message.SUCESS_UPTADE_ITEM.status_code
-                        updateFilmeJson.message = message.SUCESS_UPTADE_ITEM.message
+                        updateFilmeJson.status = message.SUCCESS_UPDATED_ITEM.status
+                        updateFilmeJson.status_code = message.SUCCESS_UPDATED_ITEM.status_code
+                        updateFilmeJson.message = message.SUCCESS_UPDATED_ITEM.message
     
                         return updateFilmeJson;
                     } else {

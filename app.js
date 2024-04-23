@@ -203,7 +203,7 @@ app.get('/v2/acmefilmes/diretores/', cors(), bodyParserJson, async(request, resp
 app.get('/v3/acmefilmes/generos', cors(), async function(request, response, next){
 
     // Chama a função para retornar os dados do genero
-    let dadosGenero = await controllerGenero.getListarGenero();
+    let dadosGenero = await controllerGeneros.getListarGenero();
 
     // Validação para verificar se existem dados
     if(dadosGenero){
@@ -263,6 +263,7 @@ app.put('/v3/acmefilmes/generos/:id', cors(), bodyParserJson, async function(req
   response.status(dadosGenero.status_code);
   response.json(dadosGenero)
 })
+
 
 app.listen('8080', function(){
     console.log('API FUNCIONANDO')

@@ -96,7 +96,7 @@ const setDeleteAtor = async function(id){
                 let dadosAtores = await atoresDAO.delectAtorsById(id)
 
                 if(dadosAtores){
-                    return message.SUCESS_DELETED_ITEM
+                    return message.SUCCESS_DELETED_ITEM
                 }else {
                     return message.ERROR_INTERNAL_SERVER_DB
                 }
@@ -340,7 +340,6 @@ module.exports = {
     getListarAtores,
     getListarAtoresById,
     setDeleteAtor,
-    // setInserirNovoAtor,
     setUpdateAtor,
     setNovoAtor
     

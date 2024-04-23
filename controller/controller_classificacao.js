@@ -2,7 +2,7 @@
  * Objetivo: Arquivo responsável pela interação entre o APP e a MODEL, que teremos todas
  * as tratativas e regra de negócio para o CRUD de Classificação
  * Data: 10/04/2024
- * Autor: Pedro Pedraga
+ * Autor: Matheus Zanoni
  * Versão: 1.0
  *******************************/
 
@@ -23,7 +23,7 @@ const getListarClassficacao = async function(){
     }else{
     
     // Chama a função do DAO para buscar os dados do banco de dados
-    let dadosClassificacao = await classificacaoDAO.selectAllClassfications();
+    let dadosClassificacao = await classificacaoDAO.selectAllClassificacoes();
 
     
     // Verifica se existem dados retornados do DAO
@@ -96,7 +96,7 @@ const setDeleteClassficacao = async function(id){
                 let dadosClassificacao = await classificacaoDAO.deleteClassficationById(id)
 
                 if(dadosClassificacao){
-                    return message.SUCESS_DELETED_ITEM
+                    return message.SUCCESS_DELETED_ITEM
                 }else {
                     return message.ERROR_INTERNAL_SERVER_DB
                 }
@@ -110,9 +110,66 @@ const setDeleteClassficacao = async function(id){
     }
 }
 
+const setUpdateClassificacao = async function(id, contentType, dadosClassificacao){
+    try{
+        let idClassificacao = id;
+        console.log(idClassificacao)
+
+        if(idClassificacao == '' || idClassificacao == undefined || isNaN (idClassificacao)){
+            return message.ERROR_INVALID_ID;
+
+           
+            
+        }else{
+
+        if(String(contentType).toLowerCase() == 'application/json'){
+            let updateClassificacaoJson = {};
+            
+            if(dadosClassificacao.categoria == ''    || dadosClassificacao.categoria == undefined       ||  dadosClassificacao.categoria == null               || dadosClassificacao.categoria.length > 255 ||
+            dadosClassificacao.descricao == ''  ||   dadosClassificacao.descricao == undefined  || dadosClassificacao.descricao == null   || dadosClassificacao.descricao > 255 ||
+            dadosClassificacao.simbolo == '' ||  dadosClassificacao.simbolo == undefined || dadosClassificacao.simbolo == null  || dadosClassificacao.simbolo > 65000      
+    ){
+            return message.ERROR_REQUIRED_FIELDS
+        } else {
+
+            let validateStatus = true;
+
+            let classificacaoById = await classificacaoDAO.selectClassficationsById(id)
+
+            if(classificacaoById.length > 0){
+                if (validateStatus){
+                    let uptadeClassificacao = await classificacaoDAO.updateClassificacao(id,dadosClassificacao);
+    
+                    if(uptadeClassificacao){
+                      
+                        updateClassificacaoJson.classificacao = dadosClassificacao
+                        updateClassificacaoJson.status = message.SUCCESS_UPDATED_ITEM.status
+                        updateClassificacaoJson.status_code = message.SUCCESS_UPDATED_ITEM.status_code
+                        updateClassificacaoJson.message = message.SUCCESS_UPDATED_ITEM.message
+    
+                        return updateClassificacaoJson;
+                    } else {
+                         return message.ERROR_INTERNAL_SERVER_DB
+                    }
+                }
+            }else{
+                return message.ERROR_NOT_FOUND
+            }
+        }
+        } else {
+            return message.ERROR_CONTENT_TYPE
+        }
+        }
+
+    } catch (error) {
+        return message.ERROR_INTERNAL_SERVER
+    }
+}
+
 
 module.exports = {
     getListarClassficacao,
     getListarClassficacaoById,
-    setDeleteClassficacao
+    setDeleteClassficacao,
+    setUpdateClassificacao
 }
