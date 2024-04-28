@@ -180,11 +180,12 @@ app.post('/v2/acmefilmes/atores/', cors(), bodyParserJson, async (request, respo
 
     let contentType = request.headers['content-type']
     let dadosBody = request.body
-    let resultDados = await controllerAtores.setNovoAtor(dadosBody, contentType)
+    let resultDados = await controllerAtores.setInserirNovoAtor(dadosBody, contentType)
     response.status(resultDados.status_code);
     response.json(resultDados)
 
 })
+
 // DIRETORES
 
 app.get('/v2/acmefilmes/diretores/', cors(), bodyParserJson, async(request, response, next) => {
