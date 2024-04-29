@@ -191,6 +191,19 @@ app.post('/v2/acmefilmes/atores/', cors(), bodyParserJson, async (request, respo
     response.json(resultDados)
 
 })
+app.put('/v2/acmefilmes/updateAtor/:id', cors(), bodyParserJson, async function(request,response,next){
+
+    let idAtor = request.params.id
+    let contentType = request.headers['content-type'];
+    let dadosBody = request.body
+
+    let resultUpdateAtor = await controllerAtores.setUpdateAtor(idAtor, dadosBody, contentType);
+
+    response.status(resultUpdateAtor.status_code)
+    response.json(resultUpdateAtor)
+
+    
+} )
 
 // DIRETORES
 
