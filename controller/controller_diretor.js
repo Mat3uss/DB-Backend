@@ -116,7 +116,7 @@ const setDeleteDiretor = async function(id){
                 let dadosDiretores = await diretoresDAO.deleteDirectorById(id)
 
                 if(dadosDiretores){
-                    return message.SUCESS_DELETED_ITEM
+                    return message.SUCCESS_DELETED_ITEM
                 }else {
                     return message.ERROR_INTERNAL_SERVER_DB
                 }
@@ -180,9 +180,9 @@ const setInserirNovoDiretor = async (dadosDiretores, contentType) => {
 
            
             // Cria o padrão de JSOn para o retorno dos dados criados no banco de dados
-            resultDadosDiretor.status = message.SUCESS_CREATED_ITEM.status;
-            resultDadosDiretor.status_code = message.SUCESS_CREATED_ITEM.status_code;
-            resultDadosDiretor.message = message.SUCESS_CREATED_ITEM.message;
+            resultDadosDiretor.status = message.SUCCESS_CREATED_ITEM.status;
+            resultDadosDiretor.status_code = message.SUCCESS_CREATED_ITEM.status_code;
+            resultDadosDiretor.message = message.SUCCESS_CREATED_ITEM.message;
             resultDadosDiretor.diretores = dadosDiretores;
 
             return resultDadosDiretor; // 201
@@ -260,9 +260,9 @@ const setUpdateDiretor = async function(id, contentType, dadosDiretores){
 
                         
                         // Cria o padrão de JSOn para o retorno dos dados criados no banco de dados
-                        resultDadosDiretor.status = message.SUCESS_CREATED_ITEM.status;
-                        resultDadosDiretor.status_code = message.SUCESS_CREATED_ITEM.status_code;
-                        resultDadosDiretor.message = message.SUCESS_CREATED_ITEM.message;
+                        resultDadosDiretor.status = message.SUCCESS_CREATED_ITEM.status;
+                        resultDadosDiretor.status_code = message.SUCCESS_CREATED_ITEM.status_code;
+                        resultDadosDiretor.message = message.SUCCESS_CREATED_ITEM.message;
                         resultDadosDiretor.diretores = dadosDiretores;
             
                         return resultDadosDiretor; // 201
