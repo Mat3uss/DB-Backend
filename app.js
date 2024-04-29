@@ -214,7 +214,7 @@ app.get('/v3/acmefilmes/diretores/:id', cors(), async function(request, response
   let idDiretor = request.params.id;
 
   // Solicita para a controller o ator filtrando pelo id
-  let dadosDiretor = await controllerDiretor.getListarDiretorById(idDiretor);
+  let dadosDiretor = await controllerDiretores.getListarDiretorById(idDiretor);
 
    response.status(dadosDiretor.status_code);
    response.json(dadosDiretor);
@@ -231,7 +231,7 @@ app.post('/v3/acmefilmes/insertdiretor', cors(), bodyParserJSON, async function(
 
    
    // Encaminha os dados da requisição para a controller enviar para o banco de dados
-   let resultDados = await controllerDiretor.setInserirNovoDiretor(dadosBody, contentType);
+   let resultDados = await controllerDiretores.setInserirNovoDiretor(dadosBody, contentType);
 
    response.status(resultDados.status_code);
    response.json(resultDados);
@@ -241,7 +241,7 @@ app.delete('/v3/acmefilmes/diretores/:id', cors(), async function(request, respo
 
     let idDiretores = request.params.id
 
-    let resultDados = await controllerDiretor.setDeleteDiretor(idDiretores);
+    let resultDados = await controllerDiretores.setDeleteDiretor(idDiretores);
 
     response.status(resultDados.status_code);
     response.json(resultDados);
@@ -252,7 +252,7 @@ app.put('/v3/acmefilmes/updatediretores/:id', cors(), bodyParserJSON, async func
     let contentType = request.headers['content-type']
     let dadosBody = request.body
 
-    let dadosDiretor = await controllerDiretor.setUpdateDiretor(idDiretor, contentType, dadosBody);
+    let dadosDiretor = await controllerDiretores.setUpdateDiretor(idDiretor, contentType, dadosBody);
 
     response.status(dadosDiretor.status_code);
     response.json(dadosDiretor);

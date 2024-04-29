@@ -36,17 +36,13 @@ const getListarAtores = async function(){
         if(dadosAtores.length > 0){
             if(dadosAtores.length > 0){
                 for (let ator of dadosAtores){
-                    ator.sexo = await sexoDAO.selectByIdSexo(ator.sexo_id)
-                    ator.nacionalidade = await nacionalidadeDAO.selectByIdNacionalidade(ator.nacionalidade_id)
-                    ator.filme = await filmeDAO.selectByIdFilme(ator.filme_ator_id)
-                    delete ator.filme_ator_id
+                    ator.sexo = await sexoDAO.selectSexoById(ator.sexo_id)
+                    ator.nacionalidade = await nacionalidadeDAO.selectNacionalidadeById(ator.nacionalidade_id)
                     delete ator.sexo_id
                     delete ator.nacionalidade_id   
                 }
 
               
-
-
         // Montando a estrutura do JSOn
         atoresJSON.atores = dadosAtores;
         atoresJSON.quantidade = dadosAtores.length;
