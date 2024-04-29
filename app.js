@@ -188,20 +188,70 @@ app.post('/v2/acmefilmes/atores/', cors(), bodyParserJson, async (request, respo
 
 // DIRETORES
 
-app.get('/v2/acmefilmes/diretores/', cors(), bodyParserJson, async(request, response, next) => {
+app.get('/v3/acmefilmes/diretores', cors(), async function(request, response, next){
 
-    let dadosDiretores = await controllerDiretores.getListarDiretores();
+    // Chama a função para retornar os dados do genero
+    let dadosDiretor = await controllerDiretor.getListarDiretores();
 
     // Validação para verificar se existem dados
-    if(dadosDiretores){
-        response.json(dadosDiretores)
+    if(dadosDiretor){
+        response.json(dadosDiretor)
         response.status(200);
     }else{
         response.json({message: 'Nenhum registro encontrado'})
         response.status()
     }
+});
 
-})
+app.get('/v3/acmefilmes/diretores/:id', cors(), async function(request, response, next){
+  // Recebe o id da requisição 
+  let idDiretor = request.params.id;
+
+  // Solicita para a controller o ator filtrando pelo id
+  let dadosDiretor = await controllerDiretor.getListarDiretorById(idDiretor);
+
+   response.status(dadosDiretor.status_code);
+   response.json(dadosDiretor);
+ 
+});
+
+app.post('/v3/acmefilmes/insertdiretor', cors(), bodyParserJSON, async function(request, response, next){
+
+    // Recebe o content-type da requisição (API deve receber application/json )
+   let contentType = request.headers['content-type'];
+
+   // Recebe os dados encaminhados na requisição do body (JSON)
+   let dadosBody = request.body;
+
+   
+   // Encaminha os dados da requisição para a controller enviar para o banco de dados
+   let resultDados = await controllerDiretor.setInserirNovoDiretor(dadosBody, contentType);
+
+   response.status(resultDados.status_code);
+   response.json(resultDados);
+});
+
+app.delete('/v3/acmefilmes/diretores/:id', cors(), async function(request, response, next){
+
+    let idDiretores = request.params.id
+
+    let resultDados = await controllerDiretor.setDeleteDiretor(idDiretores);
+
+    response.status(resultDados.status_code);
+    response.json(resultDados);
+});
+
+app.put('/v3/acmefilmes/updatediretores/:id', cors(), bodyParserJSON, async function(request,response, next){
+    let idDiretor = request.params.id
+    let contentType = request.headers['content-type']
+    let dadosBody = request.body
+
+    let dadosDiretor = await controllerDiretor.setUpdateDiretor(idDiretor, contentType, dadosBody);
+
+    response.status(dadosDiretor.status_code);
+    response.json(dadosDiretor);
+});
+
 
 // DIRETORES
 
@@ -332,6 +382,8 @@ app.put('/v3/acmefilmes/classificacao/:id', cors(), bodyParserJson, async functi
     response.status(dadosClassificacao.status_code);
     response.json(dadosClassificacao)
   })
+
+// CLASSIFICAÇÃO
 
 app.listen('8080', function(){
     console.log('API FUNCIONANDO')
