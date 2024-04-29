@@ -21,11 +21,17 @@
 //app importa funcoes
 
 
-const express = require('express')
-const cors = require('cors')
-const bodyParser = require('body-parser')
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
 
 const app = express();
+
+// Cria um objeto do tipo JSON para receber os dados via body nas requisições POST ou PUT
+const bodyParserJSON = bodyParser.json();
+
+//request - Receber dados
+//response - Devolve dados
 
 app.use((request,response,next) =>{
     response.header('Acess-Control-Allow-Origin','*');
