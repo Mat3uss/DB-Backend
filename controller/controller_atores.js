@@ -16,6 +16,11 @@ const sexoDAO = require('../model/DAO/sexo.js')
 
 const nacionalidadeDAO = require('../model/DAO/nacionalidade.js')
 
+const filmeAtorDAO = require('../model/DAO/filme_ator.js')
+
+const filmeDAO = require('../model/DAO/filme.js')
+
+
 
 
 const getListarAtores = async function(){
@@ -36,13 +41,17 @@ const getListarAtores = async function(){
         if(dadosAtores.length > 0){
             if(dadosAtores.length > 0){
                 for (let ator of dadosAtores){
-                    ator.sexo = await sexoDAO.selectSexoById(ator.sexo_id)
-                    ator.nacionalidade = await nacionalidadeDAO.selectNacionalidadeById(ator.nacionalidade_id)
+                    ator.sexo = await sexoDAO.selectByIdSexo(ator.sexo_id)
+                    ator.nacionalidade = await nacionalidadeDAO.selectByIdNacionalidade(ator.nacionalidade_id)
+                    ator.filme = await filmeDAO.selectByIdFilme(ator.filme_ator_id)
+                    delete ator.filme_ator_id
                     delete ator.sexo_id
                     delete ator.nacionalidade_id   
                 }
 
               
+
+
         // Montando a estrutura do JSOn
         atoresJSON.atores = dadosAtores;
         atoresJSON.quantidade = dadosAtores.length;
@@ -114,10 +123,10 @@ const setDeleteAtor = async function(id){
             let chamarConst = await atoresDAO.selectAtorsById(idAtores)
 
             if(chamarConst.length > 0){
-                let dadosAtores = await atoresDAO.delectAtorsById(id)
+                let dadosAtores = await atoresDAO.deleteAtorsById(id)
 
                 if(dadosAtores){
-                    return message.SUCESS_DELETED_ITEM
+                    return message.SUCCESS_DELETED_ITEM
                 }else {
                     return message.ERROR_INTERNAL_SERVER_DB
                 }
@@ -182,9 +191,9 @@ const setInserirNovoAtor = async (dadosAtores, contentType) => {
 
            
             // Cria o padrão de JSOn para o retorno dos dados criados no banco de dados
-            resultDadosAtor.status = message.SUCESS_CREATED_ITEM.status;
-            resultDadosAtor.status_code = message.SUCESS_CREATED_ITEM.status_code;
-            resultDadosAtor.message = message.SUCESS_CREATED_ITEM.message;
+            resultDadosAtor.status = message.SUCCESS_CREATED_ITEM.status;
+            resultDadosAtor.status_code = message.SUCCESS_CREATED_ITEM.status_code;
+            resultDadosAtor.message = message.SUCCESS_CREATED_ITEM.message;
             resultDadosAtor.atores = dadosAtores;
 
             return resultDadosAtor; // 201
@@ -241,9 +250,9 @@ const setUpdateAtor = async function(id, contentType, dadosAtores){
                     if(updateAtor){
                       
                         updateAtorJson.ator = dadosAtores
-                        updateAtorJson.status = message.SUCESS_UPDATED_ITEM.status
-                        updateAtorJson.status_code = message.SUCESS_UPDATED_ITEM.status_code
-                        updateAtorJson.message = message.SUCESS_UPDATED_ITEM.message
+                        updateAtorJson.status = message.SUCCESS_UPDATED_ITEM.status
+                        updateAtorJson.status_code = message.SUCCESS_UPDATED_ITEM.status_code
+                        updateAtorJson.message = message.SUCCESS_UPDATED_ITEM.message
     
                         return updateAtorJson;
                     } else {
