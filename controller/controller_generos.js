@@ -206,8 +206,6 @@ const setUpdateGenero = async function(id, contentType, dadosGenero){
 }
 
 
-
-
 module.exports = {
     getListarGenero,
     getListarGenerosById,

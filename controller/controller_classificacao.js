@@ -122,9 +122,9 @@ const setInserirNovaClassificacao = async (dadosClassificacao, contentType) => {
     let resultDadosClassificacao = {}
 
     // Validação de campos obrigatórios e consistência de dados
-    if( dadosClassificacao.categoria == ''                       || dadosClassificacao.categoria == undefined              || dadosClassificacao.categoria.length > 150 ||
-        dadosClassificacao.descricao == ''            || dadosClassificacao.descricao == undefined            || dadosClassificacao.descricao.length > 150       || 
-        dadosClassificacao.simbolo == ''                       || dadosClassificacao.simbolo == undefined           ||dadosClassificacao.simbolo .length > 65000         
+    if( dadosClassificacao.categoria == ''                       || dadosClassificacao.categoria == undefined               || dadosClassificacao.categoria.length > 150 ||
+        dadosClassificacao.descricao == ''                       || dadosClassificacao.descricao == undefined               || dadosClassificacao.descricao.length > 150       || 
+        dadosClassificacao.simbolo == ''                         || dadosClassificacao.simbolo == undefined                 ||dadosClassificacao.simbolo .length > 65000         
       
         
     ){
@@ -168,7 +168,6 @@ const setInserirNovaClassificacao = async (dadosClassificacao, contentType) => {
 const setUpdateClassificacao = async function(id, contentType, dadosClassificacao){
     try{
         let idClassificacao = id;
-        console.log(idClassificacao)
 
         if(idClassificacao == '' || idClassificacao == undefined || isNaN (idClassificacao)){
             return message.ERROR_INVALID_ID;

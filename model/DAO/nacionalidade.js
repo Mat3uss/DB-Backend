@@ -64,7 +64,7 @@ const deleteNacionalidade = async function(id){
     
         try {
     
-         let sql = `insert into tbl_nacionalidade(pais,nome,bandeira) values ('${dadosNacionalidade.pais} ${dadosNacionalidade.nome} ${dadosNacionalidade.bandeira}')`
+         let sql = `insert into tbl_nacionalidade(pais,nome,bandeira) values ('${dadosNacionalidade.pais}, ${dadosNacionalidade.nome}, ${dadosNacionalidade.bandeira}')`
                 
             // Executa o script SQL no banco de dados | Devemos usar execute e não query!
             // Execute deve ser utilizado para insert, update e delete, onde o banco não devolve dados
@@ -81,7 +81,7 @@ const deleteNacionalidade = async function(id){
         }
     }
 
-    const selectIdNacionalidade = async function() {
+    const selectByIdNacionalidade = async function() {
 
         try {
     
@@ -99,7 +99,7 @@ const deleteNacionalidade = async function(id){
     
         try {
             
-            let sql =  `update tbl_nacionalidade set pais = '${dadosNacionalidade.nome}' where id = ${id}`
+            let sql =  `update tbl_nacionalidade set pais = '${dadosNacionalidade.pais}', nome = '${dadosNacionalidade.nome}', bandeira = '${dadosNacionalidade.bandeira}' where id = ${id}`
                // Executa o script SQL no banco de dados | Devemos usar execute e não query!
                // Execute deve ser utilizado para insert, update e delete, onde o banco não devolve dados
                let result = await prisma.$executeRawUnsafe(sql);
@@ -116,16 +116,17 @@ const deleteNacionalidade = async function(id){
                
            }
     }
-    
-    
-       
 
+
+    // interligar com a controller_nacionalidade_ator e criar uma controller_nacionalidade_ator
+        
+       
 module.exports = {
     selectAllNacionalidades,
     selectNacionalidadeById,
     deleteNacionalidade,
     insertNacionalidade,
-    selectIdNacionalidade,
+    selectByIdNacionalidade,
     updateNacionalidade
 
 }

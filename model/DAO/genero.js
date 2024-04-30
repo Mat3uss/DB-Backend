@@ -98,7 +98,7 @@ const deleteGeneroById = async function(id){
     const updateGenero =  async function(id, dadosGenero) {
     
         try {
-    
+            
             let sql =  `update tbl_genero set nome = '${dadosGenero.nome}' where id_genero = ${id}`
                // Executa o script SQL no banco de dados | Devemos usar execute e não query!
                // Execute deve ser utilizado para insert, update e delete, onde o banco não devolve dados

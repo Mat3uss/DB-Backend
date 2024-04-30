@@ -106,8 +106,7 @@ const deleteClassficationById = async function(id){
                     simbolo = '${dadosClassificacao.simbolo}'
                     where id_classificacao = ${id}`
             
-                    console.log(sql);
-    
+
             let result = await prisma.$executeRawUnsafe(sql);
             
     

@@ -32,7 +32,7 @@ const selectAllSexos = async function(){
 
 }
 
-const selectSexoById = async function(id){
+const selectByIdSexo = async function(id){
         try {
             // Realiza a busca da classificacao pelo ID
             let sql = `select * from tbl_sexo where id = ${id}`;
@@ -53,5 +53,5 @@ const selectSexoById = async function(id){
 
 module.exports = {
     selectAllSexos,
-    selectSexoById
+    selectByIdSexo
 }

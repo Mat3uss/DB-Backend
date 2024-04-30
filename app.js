@@ -21,17 +21,11 @@
 //app importa funcoes
 
 
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
+const express = require('express')
+const cors = require('cors')
+const bodyParser = require('body-parser')
 
 const app = express();
-
-// Cria um objeto do tipo JSON para receber os dados via body nas requisições POST ou PUT
-const bodyParserJSON = bodyParser.json();
-
-//request - Receber dados
-//response - Devolve dados
 
 app.use((request,response,next) =>{
     response.header('Acess-Control-Allow-Origin','*');
@@ -181,40 +175,26 @@ app.delete('/v3/acmefilmes/atores/:id', cors(), async function(request, response
   response.json(resultDados);
 });
 
-
 app.post('/v2/acmefilmes/atores/', cors(), bodyParserJson, async (request, response, next) => {
 
     let contentType = request.headers['content-type']
     let dadosBody = request.body
-    let resultDados = await controllerAtores.setInserirNovoAtor(dadosBody, contentType)
+    let resultDados = await controllerAtores.setNovoAtor(dadosBody, contentType)
     response.status(resultDados.status_code);
     response.json(resultDados)
 
 })
-app.put('/v2/acmefilmes/updateAtor/:id', cors(), bodyParserJson, async function(request,response,next){
-
-    let idAtor = request.params.id
-    let contentType = request.headers['content-type'];
-    let dadosBody = request.body
-
-    let resultUpdateAtor = await controllerAtores.setUpdateAtor(idAtor, dadosBody, contentType);
-
-    response.status(resultUpdateAtor.status_code)
-    response.json(resultUpdateAtor)
-
-    
-} )
-
 // DIRETORES
 
-app.get('/v3/acmefilmes/diretores', cors(), async function(request, response, next){
+
+app.get('/v2/acmefilmes/diretores/', cors(), async function(request, response, next){
 
     // Chama a função para retornar os dados do genero
-    let dadosDiretor = await controllerDiretor.getListarDiretores();
+    let dadosDiretores = await controllerDiretores.getListarDiretores();
 
     // Validação para verificar se existem dados
-    if(dadosDiretor){
-        response.json(dadosDiretor)
+    if(dadosDiretores){
+        response.json(dadosDiretores)
         response.status(200);
     }else{
         response.json({message: 'Nenhum registro encontrado'})
@@ -222,56 +202,54 @@ app.get('/v3/acmefilmes/diretores', cors(), async function(request, response, ne
     }
 });
 
-app.get('/v3/acmefilmes/diretores/:id', cors(), async function(request, response, next){
+app.get('/v2/acmefilmes/diretores/:id', cors(), async function(request, response, next){
   // Recebe o id da requisição 
   let idDiretor = request.params.id;
 
   // Solicita para a controller o ator filtrando pelo id
-  let dadosDiretor = await controllerDiretores.getListarDiretorById(idDiretor);
+  let dadosDiretores = await controllerDiretores.getListarDiretorById(idDiretor);
 
-   response.status(dadosDiretor.status_code);
-   response.json(dadosDiretor);
+   response.status(dadosDiretores.status_code);
+   response.json(dadosDiretores);
  
 });
 
-app.post('/v3/acmefilmes/insertdiretor', cors(), bodyParserJSON, async function(request, response, next){
+app.delete('/v2/acmefilmes/diretores/:id', cors(), async function(request, response, next){
 
-    // Recebe o content-type da requisição (API deve receber application/json )
-   let contentType = request.headers['content-type'];
+  let idDiretor = request.params.id
 
-   // Recebe os dados encaminhados na requisição do body (JSON)
-   let dadosBody = request.body;
+  let dadosDiretores = await controllerDiretores.setDeleteDiretor(idDiretor);
 
-   
-   // Encaminha os dados da requisição para a controller enviar para o banco de dados
-   let resultDados = await controllerDiretores.setInserirNovoDiretor(dadosBody, contentType);
-
-   response.status(resultDados.status_code);
-   response.json(resultDados);
+  response.status(dadosDiretores.status_code);
+  response.json(dadosDiretores);
 });
 
-app.delete('/v3/acmefilmes/diretores/:id', cors(), async function(request, response, next){
+app.post('/v2/acmefilmes/diretores/', cors(), bodyParserJson, async function(request, response, next){
 
-    let idDiretores = request.params.id
+  // Recebe o content-type da requisição (API deve receber application/json )
+ let contentType = request.headers['content-type'];
 
-    let resultDados = await controllerDiretores.setDeleteDiretor(idDiretores);
+ // Recebe os dados encaminhados na requisição do body (JSON)
+ let dadosBody = request.body;
 
-    response.status(resultDados.status_code);
-    response.json(resultDados);
-});
+ 
+ // Encaminha os dados da requisição para a controller enviar para o banco de dados
+ let dadosDiretores = await controllerDiretores.setInserirNovoDiretor(dadosBody, contentType);
 
-app.put('/v3/acmefilmes/updatediretores/:id', cors(), bodyParserJSON, async function(request,response, next){
-    let idDiretor = request.params.id
-    let contentType = request.headers['content-type']
-    let dadosBody = request.body
+ response.status(dadosDiretores.status_code);
+ response.json(dadosDiretores);
+})
 
-    let dadosDiretor = await controllerDiretores.setUpdateDiretor(idDiretor, contentType, dadosBody);
+app.put('/v3/acmefilmes/generos/:id', cors(), bodyParserJson, async function(request,response, next){
+  let idDiretor = request.params.id
+  let contentType = request.headers['content-type']
+  let dadosBody = request.body
 
-    response.status(dadosDiretor.status_code);
-    response.json(dadosDiretor);
-});
+  let dadosDiretores = await controllerDiretores.setUpdateDiretor(idDiretor, contentType, dadosBody);
 
-
+  response.status(dadosDiretores.status_code);
+  response.json(dadosDiretores)
+})
 // DIRETORES
 
 // GENEROS
@@ -388,9 +366,7 @@ app.post('/v3/acmefilmes/classificacao', cors(), bodyParserJson, async function(
   
    response.status(resultDados.status_code);
    response.json(resultDados);
-  })
-
-
+})
 app.put('/v3/acmefilmes/classificacao/:id', cors(), bodyParserJson, async function(request,response, next){
     let idClassificacao = request.params.id
     let contentType = request.headers['content-type']
@@ -400,9 +376,9 @@ app.put('/v3/acmefilmes/classificacao/:id', cors(), bodyParserJson, async functi
   
     response.status(dadosClassificacao.status_code);
     response.json(dadosClassificacao)
-  })
+})
 
-// CLASSIFICAÇÃO
+//   CLASSIFICACAO
 
 app.listen('8080', function(){
     console.log('API FUNCIONANDO')
