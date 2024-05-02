@@ -15,7 +15,7 @@ const prisma = new PrismaClient();
 const selectAllClassificacoes = async function(){
 
     // Script sql para listar todos os registros
-    let sql = 'select * from tbl_classificacao order by id_classificacao desc';
+    let sql = 'select * from tbl_classificacao order by id desc';
 
     // $queryRawUnsafe(sql)  = Encaminha apenas a variável
     // $queryRaw('select * from tbl_classificacao) = Encaminha o script do banco 
@@ -35,7 +35,7 @@ const selectAllClassificacoes = async function(){
 const selectClassficationsById = async function(id){
         try {
             // Realiza a busca da classificacao pelo ID
-            let sql = `select * from tbl_classificacao where id_classificacao = ${id}`;
+            let sql = `select * from tbl_classificacao where id = ${id}`;
         
             // Executa no banco de dados o script sql
             let rsClassficacao = await prisma.$queryRawUnsafe(sql);
@@ -50,7 +50,7 @@ const selectClassficationsById = async function(id){
 
 const deleteClassficationById = async function(id){
         try {
-            let sql = `delete from tbl_classificacao where id_classificacao = ${id}`
+            let sql = `delete from tbl_classificacao where id = ${id}`
     
             let rsClassficacao = await prisma.$queryRawUnsafe(sql);
             return rsClassficacao;

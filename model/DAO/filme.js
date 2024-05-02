@@ -28,7 +28,8 @@ const insertFilme =  async function(dadosFilme) {
                 valor_unitario,
                 tbl_classificacao_id,
                 tbl_ator_filme_id,
-                tbl_genero_id
+                tbl_genero_id,
+                tbl_diretor_filme_id
             ) values (
                 '${dadosFilme.nome}',
                 '${dadosFilme.sinopse}',
@@ -39,7 +40,8 @@ const insertFilme =  async function(dadosFilme) {
                 '${dadosFilme.valor_unitario}',
                 '${dadosFilme.tbl_classificacao_id}',
                 '${dadosFilme.tbl_ator_filme_id}',
-                '${dadosFilme.tbl_genero_id}'
+                '${dadosFilme.tbl_genero_id}',
+                '${dadosFilme.tbl_diretor_filme_id}'
             )`;
 
         }else{
@@ -54,7 +56,8 @@ const insertFilme =  async function(dadosFilme) {
             valor_unitario,
             tbl_classificacao_id,
             tbl_ator_filme_id,
-            tbl_genero_id
+            tbl_genero_id,
+            tbl_diretor_filme_id
         ) values (
             '${dadosFilme.nome}',
             '${dadosFilme.sinopse}',
@@ -65,7 +68,8 @@ const insertFilme =  async function(dadosFilme) {
             '${dadosFilme.valor_unitario}',
             '${dadosFilme.tbl_classificacao_id}',
             '${dadosFilme.tbl_ator_filme_id}',
-            '${dadosFilme.tbl_genero_id}'
+            '${dadosFilme.tbl_genero_id}',
+            '${dadosFilme.tbl_diretor_filme_id}'
         )`;
         }
        
