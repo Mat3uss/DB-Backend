@@ -4,7 +4,6 @@
  * Autor: Matheus Zanoni
  * Versão: 1.0
  *******************************/
-
 // Import da biblioteca do prisma client
 const { PrismaClient } = require ('@prisma/client')
 
@@ -31,7 +30,7 @@ const selectAllDirectors = async function(){
         return false
 
     }
- const selectDirectorById  = async function(){
+ const selectDirectorById  = async function(id){
     
     try {
         // Script para selecionar determinado diretor pelo seu ID
@@ -60,21 +59,19 @@ const deleteDirectorById = async function(id){
         
     }
 }
-
-const insertDiretor =  async function(dadosDiretor) {
+const insertDiretor =  async function(dadosDiretores) {
     
     try {
 
      let sql;
-                sql = `insert into tbl_diretores(nome,data_nascimento, foto, biografia, nacionalidadediretor_id, sexo_id,filme_id) values 
-                ('${dadosDiretor.nome}',
-                '${dadosDiretor.data_nascimento}',
-                '${dadosDiretor.foto}',
-                '${dadosDiretor.biografia}',
-                '${dadosDiretor.nacionalidadediretor_id}',
-                '${dadosDiretor.sexo_id}',
-                '${dadosDiretor.nacionalidade_id}')`
-       
+        if( dadosDiretores.data_falecimento == null || 
+            dadosDiretores.data_falecimento == ''   ||
+            dadosDiretores.data_falecimento == undefined){
+                sql = `insert into tbl_diretores(nome, data_nascimento, foto, data_falecimento, biografia, nacionalidadediretor_id, sexo_id, filme_id) values ('${dadosDiretores.nome}', '${dadosDiretores.data_nascimento}', '${dadosDiretores.foto}', null, '${dadosDiretores.biografia}', ${dadosDiretores.nacionalidadediretor_id}, ${dadosDiretores.sexo_id}, ${dadosDiretores.filme_id})`
+            }else {
+                sql = `insert into tbl_diretores(nome, data_nascimento, foto, data_falecimento, biografia,  nacionalidadediretor_id, sexo_id, filme_id) values ('${dadosDiretores.nome}', '${dadosDiretores.data_nascimento}', '${dadosDiretores.foto}', '${dadosDiretores.data_falecimento}', '${dadosDiretores.biografia}', ${dadosDiretores.nacionalidadediretor_id},   ${dadosDiretores.sexo_id}, ${dadosDiretores.filme_id})`
+
+            }
         // Executa o script SQL no banco de dados | Devemos usar execute e não query!
         // Execute deve ser utilizado para insert, update e delete, onde o banco não devolve dados
         let result = await prisma.$executeRawUnsafe(sql);
@@ -86,28 +83,38 @@ const insertDiretor =  async function(dadosDiretor) {
             return false;
 
     } catch (error) {
-
         return false;
         
     }
 }
 
-const updateDiretor =  async function(id, dadosDiretor) {
+const selectIdDiretor = async function() {
+
+    try {
+
+    let sql = `select CAST(last_insert_id() as DECIMAL) as id from tbl_diretores limit 1`;
+
+    let diretorId = await prisma.$queryRawUnsafe(sql)
+     return diretorId
+    } catch (error) {
+        return false
+        
+    }   
+}
+
+const updateDiretor =  async function(id, dadosDiretores) {
     
     try {
 
         let sql;
-                                                                 
-                   sql = `update tbl_diretores set nome = '${dadosDiretor.nome}',
-                    data_nascimento = '${dadosDiretor.data_nascimento}',
-                    foto = '${dadosDiretor.foto}',
-                    biografia = '${dadosDiretor.biografia}',
-                    nacionalidadediretor_id ='${dadosDiretor.nacionalidadediretor_id}',
-                    sexo_id ='${dadosDiretor.sexo_id}',
-                    filme_id = '${dadosDiretor.filme_id}'
-                    where id = ${id}`
-                  
+           if( dadosDiretores.datafalecimento == null || 
+               dadosDiretores.datafalecimento == ''   ||
+               dadosDiretores.datafalecimento == undefined){
+                   sql = `update tbl_diretores set nome = '${dadosDiretores.nome}',  data_nascimento = '${dadosDiretores.data_nascimento}',  foto = '${dadosDiretores.foto}',  data_falecimento = null,  biografia ='${dadosDiretores.biografia}', nacionalidadediretor_id = ${dadosDiretores.nacionalidadediretor_id}, sexo_id = ${dadosDiretores.sexo_id}, filme_id =${dadosDiretores.filme_id} where id = ${id}`
+               }else {
+                   sql = `update tbl_diretores set nome = '${dadosDiretores.nome}', data_nascimento =  '${dadosDiretores.data_nascimento}', foto = '${dadosDiretores.foto}', data_falecimento ='${dadosDiretores.data_falecimento}',  biografia = '${dadosDiretores.biografia}', nacionalidadediretor_id = ${dadosDiretores.nacionalidadediretor_id},  sexo_id = ${dadosDiretores.sexo_id}, filme_id = ${dadosDiretores.filme_id} where id = ${id}`
    
+               }
            // Executa o script SQL no banco de dados | Devemos usar execute e não query!
            // Execute deve ser utilizado para insert, update e delete, onde o banco não devolve dados
            let result = await prisma.$executeRawUnsafe(sql);
@@ -125,14 +132,11 @@ const updateDiretor =  async function(id, dadosDiretor) {
        }
 }
 
-
-
-
 module.exports = {
     selectAllDirectors,
     selectDirectorById,
     deleteDirectorById,
     insertDiretor,
+    selectIdDiretor,
     updateDiretor
-
 }
