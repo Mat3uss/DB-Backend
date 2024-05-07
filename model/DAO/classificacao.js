@@ -1,7 +1,7 @@
 /********************************
  * Objetivo: Cria a interação com o Banco de dados MySQL para fazer o CRUD de Filmes
  * Data: 09/04/2024
- * Autor: Matheus Zanoni
+ * Autor: Pedro Pedraga
  * Versão: 1.0
  *******************************/
 
@@ -12,7 +12,9 @@ const { PrismaClient } = require ('@prisma/client')
 const prisma = new PrismaClient();
 
 
-const selectAllClassificacoes = async function(){
+const selectAllClassfications = async function(){
+
+
 
     // Script sql para listar todos os registros
     let sql = 'select * from tbl_classificacao order by id desc';
@@ -22,9 +24,6 @@ const selectAllClassificacoes = async function(){
 
     // Executa o script no banco de dados e recebe o retorno dos dados da variavel rsFilmes
     let rsClassficacao = await prisma.$queryRawUnsafe(sql)
-     // Para usar await a função necessita ser async(async function)
-
-    // Tratamento de erro para retornar dados ou retornar false
      if(rsClassficacao.length > 0)
      return rsClassficacao;
      else
@@ -61,18 +60,22 @@ const deleteClassficationById = async function(id){
         }
     }
 
-    const selectIdClassificacao = async function(){
-        try {
-            let sql = `select CAST(last_insert_id() as DECIMAL) as id from tbl_classificacao limit 1`
+    
+    const selectIdClassificacao = async function() {
 
-            let classificacaoId = await prisma.$queryRawUnsafe(sql)
-            return classificacaoId
+        try {
+    
+        let sql = `select CAST(last_insert_id() as DECIMAL) as id from tbl_classificacao limit 1`;
+    
+        let classificacaoId = await prisma.$queryRawUnsafe(sql)
+         return classificacaoId
         } catch (error) {
             return false
-        }
+            
+        }   
     }
-
-    const insertClassificacao =  async function(dadosClassificacao) {
+  
+const insertClassificacao =  async function(dadosClassificacao) {
     
         try {
     
@@ -95,7 +98,6 @@ const deleteClassficationById = async function(id){
         }
     }
 
-
     const updateClassificacao =  async function(id, dadosClassificacao) {
     
         try{
@@ -104,9 +106,10 @@ const deleteClassficationById = async function(id){
                 sql = `UPDATE tbl_classificacao SET categoria = '${dadosClassificacao.categoria}',
                     descricao = '${dadosClassificacao.descricao}',
                     simbolo = '${dadosClassificacao.simbolo}'
-                    where id_classificacao = ${id}`
+                    where id = ${id}`
             
-
+                    console.log(sql);
+    
             let result = await prisma.$executeRawUnsafe(sql);
             
     
@@ -120,9 +123,13 @@ const deleteClassficationById = async function(id){
     
         }
     }
+    
+    
+    
+    
 
 module.exports = {
-    selectAllClassificacoes,
+    selectAllClassfications,
     selectClassficationsById,
     deleteClassficationById,
     insertClassificacao,

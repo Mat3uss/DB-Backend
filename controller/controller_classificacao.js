@@ -23,7 +23,7 @@ const getListarClassficacao = async function(){
     }else{
     
     // Chama a função do DAO para buscar os dados do banco de dados
-    let dadosClassificacao = await classificacaoDAO.selectAllClassificacoes();
+    let dadosClassificacao = await classificacaoDAO.selectAllClassfications();
 
     
     // Verifica se existem dados retornados do DAO
@@ -109,6 +109,7 @@ const setDeleteClassficacao = async function(id){
         return message.ERROR_INTERNAL_SERVER
     }
 }
+
 const setInserirNovaClassificacao = async (dadosClassificacao, contentType) => {
 
     try{
@@ -119,12 +120,12 @@ const setInserirNovaClassificacao = async (dadosClassificacao, contentType) => {
     
 
     // Cria a variável json
-    let resultDadosClassificacao = {}
+    let resultdadosClassificacao = {}
 
     // Validação de campos obrigatórios e consistência de dados
-    if( dadosClassificacao.categoria == ''                       || dadosClassificacao.categoria == undefined               || dadosClassificacao.categoria.length > 150 ||
-        dadosClassificacao.descricao == ''                       || dadosClassificacao.descricao == undefined               || dadosClassificacao.descricao.length > 150       || 
-        dadosClassificacao.simbolo == ''                         || dadosClassificacao.simbolo == undefined                 ||dadosClassificacao.simbolo .length > 65000         
+    if( dadosClassificacao.categoria == ''                       || dadosClassificacao.categoria == undefined              || dadosClassificacao.categoria.length > 150 ||
+        dadosClassificacao.descricao == ''            || dadosClassificacao.descricao == undefined            || dadosClassificacao.descricao.length > 150       || 
+        dadosClassificacao.simbolo == ''                       || dadosClassificacao.simbolo == undefined           ||dadosClassificacao.simbolo .length > 65000         
       
         
     ){
@@ -143,12 +144,12 @@ const setInserirNovaClassificacao = async (dadosClassificacao, contentType) => {
 
            
             // Cria o padrão de JSOn para o retorno dos dados criados no banco de dados
-            resultDadosClassificacao.status = message.SUCCESS_CREATED_ITEM.status;
-            resultDadosClassificacao.status_code = message.SUCCESS_CREATED_ITEM.status_code;
-            resultDadosClassificacao.message = message.SUCCESS_CREATED_ITEM.message;
-            resultDadosClassificacao.classificacoes = dadosClassificacao;
+            resultdadosClassificacao.status = message.SUCCESS_CREATED_ITEM.status;
+            resultdadosClassificacao.status_code = message.SUCCESS_CREATED_ITEM.status_code;
+            resultdadosClassificacao.message = message.SUCCESS_CREATED_ITEM.message;
+            resultdadosClassificacao.classificacoes = dadosClassificacao;
 
-            return resultDadosClassificacao; // 201
+            return resultdadosClassificacao; // 201
         } else{
             return message.ERROR_INTERNAL_SERVER_DB; // 500 Erro na camada do DAO (Banco)
             
@@ -164,10 +165,10 @@ const setInserirNovaClassificacao = async (dadosClassificacao, contentType) => {
 }
      
 }
-
 const setUpdateClassificacao = async function(id, contentType, dadosClassificacao){
     try{
         let idClassificacao = id;
+        console.log(idClassificacao)
 
         if(idClassificacao == '' || idClassificacao == undefined || isNaN (idClassificacao)){
             return message.ERROR_INVALID_ID;
@@ -221,10 +222,11 @@ const setUpdateClassificacao = async function(id, contentType, dadosClassificaca
 }
 
 
+
 module.exports = {
     getListarClassficacao,
     getListarClassficacaoById,
     setDeleteClassficacao,
-    setUpdateClassificacao,
-    setInserirNovaClassificacao
+    setInserirNovaClassificacao,
+    setUpdateClassificacao
 }

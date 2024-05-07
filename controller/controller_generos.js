@@ -1,3 +1,11 @@
+/********************************
+ * Objetivo: Arquivo responsável pela interação entre o APP e a MODEL, que teremos todas
+ * as tratativas e regra de negócio para o CRUD de Filmes
+ * Data: 30/01/2024
+ * Autor: Matheus Zanoni
+ * Versão: 1.0
+ *******************************/
+
 // Import do arquivo de configuração do projeto
 const message = require('../modulo/config.js')
 
@@ -155,6 +163,7 @@ const setDeleteGenero = async function(id){
 const setUpdateGenero = async function(id, contentType, dadosGenero){
     try{
         let idGenero = id;
+        console.log(idGenero)
 
         if(idGenero == '' || idGenero == undefined || isNaN (idGenero)){
             return message.ERROR_INVALID_ID;

@@ -1,23 +1,26 @@
-/**********************************************************************************************************************************************
-* Objetivo: Arquivo responsavel pela interação entre o APP e a model, que teremos todas as tratativas e regra de negocio para o CRUD de filmes*                                                
-* Data: 30/01/24                                                                                                                              *
-* Autor: Matheus Zanoni Barbosa                                                                                                               *
-* Versão: 1.0                                                                                                                                 * 
-***********************************************************************************************************************************************/
+/********************************
+ * Objetivo: Arquivo responsável pela interação entre o APP e a MODEL, que teremos todas
+ * as tratativas e regra de negócio para o CRUD de Filmes
+ * Data: 30/01/2024
+ * Autor: Matheus Zanoni
+ * Versão: 1.0
+ *******************************/
 
-// IMport das mensagens de erro e configuração do projeto
-const message = require ('../modulo/config.js');
+// Import do arquivo de configuração do projeto
+const message = require('../modulo/config.js')
 
+// Import do arquivo DAO para manipular dados do banco de dados
+const filmesDAO = require('../model/DAO/filme.js');
 
+const classificacaoDAO = require('../model/DAO/classificacao.js');
 
-// Import do arquivo DAO que fará a comuicação do banco de dados 
-const filmeDAO = require('../model/DAO/filme.js');
-const { application } = require('express');
+const generoDAO = require('../model/DAO/genero.js')
 
+const controllerAtor = require('./controller_atores.js')
 
-
-
-//função para validar e inserir um novo filme
+const diretorDAO= require('../model/DAO/diretores.js')
+ 
+// Função para inserir um novo filme no banco de dados
 const setInserirNovoFilme = async function(dadosFilme, contentType){
 
     try{

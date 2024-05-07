@@ -1,57 +1,55 @@
-/********************************
- * Objetivo: Cria a interação com o Banco de dados MySQL para fazer o CRUD de Filmes
- * Data: 09/04/2024
- * Autor: Matheus Zanoni
+/*******************************************************
+ * Objetivo: arquivo responsável pelo acesso ao Banco de Dados mySql, aqui faremos os gets do sexo
+ * DATA: 23/04/2024
+ * Autor: Pedro Pedraga
  * Versão: 1.0
- *******************************/
+*/
 
-// Import da biblioteca do prisma client
-const { PrismaClient } = require ('@prisma/client')
 
-// Instaciando o o bjeto prisma com as caracteristicas do prisma client
+
+// função que faz o import da biblioteca do prisma client para manipular scripts SQL
+const {PrismaClient} = require('@prisma/client');
+
+
+// Instancia d classe PrismaClient 
 const prisma = new PrismaClient();
 
 
-const selectAllSexos = async function(){
+//função para listar todos os sexos do banco de dados
+const selectAllSexo = async function(){
 
-    // Script sql para listar todos os registros
-    let sql = 'select * from tbl_sexo order by id desc';
+    try {
 
-    // $queryRawUnsafe(sql)  = Encaminha apenas a variável
-    // $queryRaw('select * from tbl_classificacao) = Encaminha o script do banco 
-
-    // Executa o script no banco de dados e recebe o retorno dos dados da variavel rsFilmes
-    let rsSexo = await prisma.$queryRawUnsafe(sql)
-     // Para usar await a função necessita ser async(async function)
-
-    // Tratamento de erro para retornar dados ou retornar false
-     if(rsSexo.length > 0)
-     return rsSexo;
-     else
-        return false
-
+        let sql = 'select * from tbl_sexo';
+        //Executa o script SQL no BD e recebe o retorno dos dados
+    let rsSexo = await prisma.$queryRawUnsafe(sql);
+    
+    return rsSexo;
+    } catch (error) {
+        return false;
+    }
 }
 
-const selectByIdSexo = async function(id){
-        try {
-            // Realiza a busca da classificacao pelo ID
-            let sql = `select * from tbl_sexo where id = ${id}`;
-        
-            // Executa no banco de dados o script sql
-            let rsSexo = await prisma.$queryRawUnsafe(sql);
 
-                return rsSexo;
+// função para buscar um sexo no banco de dados filtrando pelo id 
+const selectByIdSexo = async function (id){
+
+    try {
         
-            } catch (error) {
-                return false;
-                
-            }
+    //script sql para filtrar pelo id
+    let sql = `select * from tbl_sexo where id = ${id}`;
+    //executa o sql no banco de dados
+    let rsSexo = await prisma.$queryRawUnsafe(sql);
+
+    return rsSexo;
+
+    } catch (error) {
+        return false
     }
-
-
+}    
 
 
 module.exports = {
-    selectAllSexos,
+    selectAllSexo,
     selectByIdSexo
 }

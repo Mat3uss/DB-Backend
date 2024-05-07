@@ -42,6 +42,11 @@ const getListarAtores = async function(){
                 for (let ator of dadosAtores){
                     ator.sexo = await sexoDAO.selectByIdSexo(ator.sexo_id)
                     ator.nacionalidade = await nacionalidadeDAO.selectByIdNacionalidade(ator.nacionalidade_id)
+                    const listaFilmesAtor = await atoresDAO.selectAtoresByIdFilme(ator.filme_ator_id)
+                    ator.filme = listaFilmesAtor
+                    delete ator.filme_ator_id
+                    delete ator.sexo_id
+                    delete ator.nacionalidade_id
                     ator.filme = await filmeDAO.selectByIdFilme(ator.filme_ator_id)
                     delete ator.filme_ator_id
                     delete ator.sexo_id
@@ -125,7 +130,7 @@ const setDeleteAtor = async function(id){
                 let dadosAtores = await atoresDAO.delectAtorsById(id)
 
                 if(dadosAtores){
-                    return message.SUCCESS_CREATED_ITEM
+                    return message.SUCCESS_DELETED_ITEM
                 }else {
                     return message.ERROR_INTERNAL_SERVER_DB
                 }
@@ -249,9 +254,9 @@ const setUpdateAtor = async function(id, contentType, dadosAtores){
                     if(updateAtor){
                       
                         updateAtorJson.ator = dadosAtores
-                        updateAtorJson.status = message.SUCCESS_CREATED_ITEM.status
-                        updateAtorJson.status_code = message.SUCCESS_CREATED_ITEM.status_code
-                        updateAtorJson.message = message.SUCCESS_CREATED_ITEM.message
+                        updateAtorJson.status = message.SUCCESS_UPDATED_ITEM.status
+                        updateAtorJson.status_code = message.SUCCESS_UPDATED_ITEM.status_code
+                        updateAtorJson.message = message.SUCCESS_UPDATED_ITEM.message
     
                         return updateAtorJson;
                     } else {

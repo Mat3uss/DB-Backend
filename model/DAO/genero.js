@@ -1,7 +1,7 @@
 /********************************
  * Objetivo: Cria a interação com o Banco de dados MySQL para fazer o CRUD de Filmes
  * Data: 09/04/2024
- * Autor: Matheus Zanoni
+ * Autor: Pedro Pedraga
  * Versão: 1.0
  *******************************/
 
@@ -15,7 +15,7 @@ const prisma = new PrismaClient();
 const selectAllGeneros = async function(){
 
     // Script sql para listar todos os registros
-    let sql = 'select * from tbl_genero order by id_genero desc';
+    let sql = 'select * from tbl_genero order by id desc';
 
     // $queryRawUnsafe(sql)  = Encaminha apenas a variável
     // $queryRaw('select * from tbl_classificacao) = Encaminha o script do banco 
@@ -35,7 +35,7 @@ const selectAllGeneros = async function(){
 const selectGeneroById = async function(id){
         try {
             // Realiza a busca da classificacao pelo ID
-            let sql = `select * from tbl_genero where id_genero = ${id}`;
+            let sql = `select * from tbl_genero where id = ${id}`;
         
             // Executa no banco de dados o script sql
             let rsGenero = await prisma.$queryRawUnsafe(sql);
@@ -50,7 +50,7 @@ const selectGeneroById = async function(id){
 
 const deleteGeneroById = async function(id){
         try {
-            let sql = `delete from tbl_genero where id_genero = ${id}`
+            let sql = `delete from tbl_genero where id = ${id}`
     
             let rsGenero = await prisma.$queryRawUnsafe(sql);
             return rsGenero;
@@ -69,8 +69,10 @@ const deleteGeneroById = async function(id){
             // Executa o script SQL no banco de dados | Devemos usar execute e não query!
             // Execute deve ser utilizado para insert, update e delete, onde o banco não devolve dados
             let result = await prisma.$executeRawUnsafe(sql);
+    
             // Validação para verificar se o insert funcionou no banco de dados
-            if(result) return true
+            if(result )
+                return true;
             else
                 return false;
     
@@ -97,24 +99,18 @@ const deleteGeneroById = async function(id){
   
     const updateGenero =  async function(id, dadosGenero) {
     
-        try {
-            
-            let sql =  `update tbl_genero set nome = '${dadosGenero.nome}' where id_genero = ${id}`
-               // Executa o script SQL no banco de dados | Devemos usar execute e não query!
-               // Execute deve ser utilizado para insert, update e delete, onde o banco não devolve dados
-               let result = await prisma.$executeRawUnsafe(sql);
-       
-               // Validação para verificar se o insert funcionou no banco de dados
-               if(result )
-                   return true;
-               else
-                   return false;
-       
-           } catch (error) {
-       
-               return false;
-               
-           }
+ 
+    try {
+        let sql = `update tbl_genero set nome = '${dadosGenero.nome}' where id = ${id}`   
+        let resultStatus = await prisma.$executeRawUnsafe(sql)
+        if(resultStatus)
+            return true
+        else
+            return false
+    } catch (error) {
+        return false
+    }
+
     }
     
     
@@ -129,3 +125,4 @@ module.exports = {
     updateGenero
 
 }
+
