@@ -260,7 +260,7 @@
              
                          let idSelect = await diretoresDAO.updateDiretor(id, dadosDiretores);
              
-                         dadosDiretores.id = Number (idSelect[0].id)
+                       
  
                          
                          // Cria o padrão de JSOn para o retorno dos dados criados no banco de dados
@@ -284,6 +284,7 @@
  
          }
      } catch (error) {
+        console.log(error)
          return message.ERROR_INTERNAL_SERVER
          
      }

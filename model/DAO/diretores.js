@@ -126,7 +126,7 @@ const updateDiretor =  async function(id, dadosDiretores) {
                return false;
    
        } catch (error) {
-   
+            console.log(error)
            return false;
            
        }

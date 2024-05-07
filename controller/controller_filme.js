@@ -275,9 +275,9 @@ const getBuscarFilme = async function(id){
                 filme.genero = await generoDAO.selectGeneroById(filme.tbl_genero_id)
                 filme.classificacao = await classificacaoDAO.selectClassficationsById(filme.tbl_classificacao_id)
                 filme.atores = await controllerAtor.getListarAtoresById(filme.tbl_ator_filme_id)
-                delete filme.tbl_classificacao_id
-                delete filme.tbl_ator_filme_id
-                delete filme.tbl_genero_id
+                // delete filme.tbl_classificacao_id
+                // delete filme.tbl_ator_filme_id
+                // delete filme.tbl_genero_id
             }
             // Validação para verificar se existem dados de retorno
             if(dadosFilme.length > 0){
